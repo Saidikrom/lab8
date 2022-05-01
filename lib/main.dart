@@ -4,7 +4,7 @@ import 'styles/app_themes.dart';
 import 'routes/appPages.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

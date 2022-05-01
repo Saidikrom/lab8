@@ -1,4 +1,7 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:lab8/routes/list.dart';
 
 class InputPage extends StatefulWidget {
@@ -9,9 +12,9 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
-  List<String> salom = [
+  List<String> words = [
     'lelho',
     'nagerch',
     'erfe',
@@ -21,9 +24,10 @@ class _InputPageState extends State<InputPage> {
     'ipks',
     'lal',
     'oresc',
+    'tterel',
     'tterel'
   ];
-  List<String> salom1 = [
+  List<String> words1 = [
     'hello',
     'changer',
     'free',
@@ -33,17 +37,30 @@ class _InputPageState extends State<InputPage> {
     'skip',
     'all',
     'score',
+    'letter',
     'letter'
   ];
   var i = 0;
   var b = 0;
-  bool _validate = true;
+  var x = 0;
+  bool _validate = false;
+  void wordChage() {
+    setState(() {
+      // ignore: unnecessary_null_comparison
+      if (_controller.text == words1[i] && _controller.text != null) {
+        _validate = false;
+      } else {
+        _validate = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 64, 43, 182),
-        title: Text('Unscramble'),
+        backgroundColor: const Color.fromARGB(255, 54, 83, 177),
+        title: const Text('Unscramble'),
       ),
       body: Column(
         children: [
@@ -53,12 +70,14 @@ class _InputPageState extends State<InputPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${i + 1} of 10 words',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  i == 10 ? '${i} of 10 words' : '${i + 1} of 10 words',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text(
-                  'SCORE: ${b}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  'SCORE: $b',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ],
             ),
@@ -69,8 +88,8 @@ class _InputPageState extends State<InputPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  salom[i],
-                  style: TextStyle(fontSize: 50),
+                  words[i],
+                  style: const TextStyle(fontSize: 50),
                 ),
               ],
             ),
@@ -79,8 +98,9 @@ class _InputPageState extends State<InputPage> {
             padding: const EdgeInsets.symmetric(vertical: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              // ignore: prefer_const_literals_to_create_immutables
               children: [
-                Text(
+                const Text(
                   'Unscramble the word using all the letters.',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
@@ -90,13 +110,21 @@ class _InputPageState extends State<InputPage> {
           Padding(
             padding: const EdgeInsets.all(13.0),
             child: TextFormField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter your word',
-                errorText: _validate ? null : 'Try Again!',
-              ),
-            ),
+                controller: _controller,
+                decoration: _validate
+                    ? const InputDecoration(
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                        hintText: 'Enter your word',
+                        errorBorder: OutlineInputBorder(),
+                        errorText: 'Try again')
+                    : const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter your word',
+                      )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -104,7 +132,7 @@ class _InputPageState extends State<InputPage> {
               MaterialButton(
                 minWidth: 167,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey),
+                  side: const BorderSide(color: Colors.grey),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 onPressed: () {
@@ -114,43 +142,36 @@ class _InputPageState extends State<InputPage> {
                     }
                   });
                 },
-                child: Text(
+                child: const Text(
                   'SKIP',
                   style: TextStyle(color: Color.fromARGB(255, 54, 83, 177)),
                 ),
               ),
               MaterialButton(
                 minWidth: 167,
-                color: Color.fromARGB(255, 54, 83, 177),
+                color: const Color.fromARGB(255, 54, 83, 177),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
                 onPressed: () {
                   setState(() {
-                    if (_controller.text == salom1[i] && i != 9) {
+                    wordChage();
+                    if (_controller.text == words1[i] && i != 10) {
                       i++;
                       b = b + 10;
-                      print(i);
                     } else {
-                      if (_controller.text == salom1[i]) {
-                        i = 0;
-                        b = 0;
-                      } else {
+                      if (_controller.text != words1[i]) {
                         i = i;
                         b = b;
                       }
-
-                      if (i == 9) {
-                        DialogWidget(context);
-                      }
                     }
+                    if (i == 9 || i == 10) {
+                      DialogWidget(context);
+                    }
+                    _controller.clear();
                   });
-                  _controller.clear();
-                  _controller.text.isEmpty
-                      ? _validate = true
-                      : _validate = false;
                 },
-                child: Text(
+                child: const Text(
                   'SUBMIT',
                   style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                 ),
@@ -162,9 +183,10 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   DialogWidget(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      title: Text('Congratulations!'),
+      title: const Text('Congratulations!'),
       content: Text('your scored: $b'),
       actions: [
         TextButton(
@@ -173,7 +195,7 @@ class _InputPageState extends State<InputPage> {
                 Navigator.of(context).pop(false);
               });
             },
-            child: Text('EXIT')),
+            child: const Text('EXIT')),
         TextButton(
             onPressed: () {
               setState(() {
@@ -181,7 +203,7 @@ class _InputPageState extends State<InputPage> {
                 b = 0;
               });
             },
-            child: Text('PLAY AGAIN')),
+            child: const Text('PLAY AGAIN')),
       ],
     );
 
