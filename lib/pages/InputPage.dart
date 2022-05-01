@@ -70,7 +70,7 @@ class _InputPageState extends State<InputPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  i == 10 ? '${i} of 10 words' : '${i + 1} of 10 words',
+                  i == 10 ? '$i of 10 words' : '${i + 1} of 10 words',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
                 ),
